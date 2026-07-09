@@ -4,7 +4,7 @@ import Arrow from "../components/Arrow";
 import Eyebrow from "../components/Eyebrow";
 import Globe from "../components/Globe";
 
-const trustedBy = ["RJL MILLING CORP.", "XAVI HARDWARE"];
+const trustedBy = ["RJL RICEMILL CORP.", "XAVI HARDWARE"];
 
 const problems = [
   "Endless scripts and manual setup",
@@ -85,7 +85,7 @@ export default function Home() {
 
         <div className="trusted">
           <div className="trusted__label">
-            Trusted by <span className="accent">120+</span> businesses worldwide
+            Trusted by <span className="accent"></span> businesses worldwide
           </div>
           <div className="trusted__logos">
             {trustedBy.map((name) => (
