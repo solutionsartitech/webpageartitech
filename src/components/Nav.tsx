@@ -27,14 +27,11 @@ export default function Nav() {
         </nav>
 
         <Link to="/" className="nav__brand">
-          <img src="/logo-mark.png" alt="ARTITECH logo" className="nav__mark" />
-          <span className="nav__wordmark">ARTITECH</span>
+          <img src="/artitech-logo.png" alt="ARTITECH logo" className="nav__mark" />
+          <span className="nav__wordmark">RTITECH</span>
         </Link>
 
         <div className="nav__actions">
-          <Link to="/contact" className="btn btn--ghost">
-            SIGN IN
-          </Link>
           <Link to="/contact" className="btn btn--dark-sm">
             TALK TO US
           </Link>

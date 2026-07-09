@@ -4,7 +4,7 @@ import Arrow from "../components/Arrow";
 import Eyebrow from "../components/Eyebrow";
 import Globe from "../components/Globe";
 
-const trustedBy = ["Stack&d Lab", "Visionwork", "Luminous", "Polymath", "Quotient"];
+const trustedBy = ["RJL MILLING CORP.", "XAVI HARDWARE"];
 
 const problems = [
   "Endless scripts and manual setup",

@@ -12,8 +12,8 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer__inner">
         <div className="footer__brand">
-          <img src="/logo-mark.png" alt="" className="footer__mark" />
-          <span className="footer__wordmark">ARTITECH</span>
+          <img src="/artitech-logo.png" alt="" className="footer__mark" />
+          <span className="footer__wordmark">RTITECH</span>
         </div>
         <nav className="footer__links">
           {links.map((l) => (

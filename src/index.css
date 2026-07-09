@@ -79,7 +79,7 @@ a:hover {
 .nav__brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 1px;
   color: var(--ink);
   justify-self: center;
 }
@@ -87,9 +87,10 @@ a:hover {
   color: var(--ink);
 }
 .nav__mark {
-  width: 26px;
-  height: 26px;
+  width: auto;
+  height: 34px;
   object-fit: contain;
+  margin-right: -2px;
 }
 .nav__wordmark {
   font-family: var(--font-display);
@@ -737,12 +738,13 @@ a:hover {
 .footer__brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 1px;
 }
 .footer__mark {
-  width: 24px;
-  height: 24px;
+  width: auto;
+  height: 30px;
   object-fit: contain;
+  margin-right: -2px;
 }
 .footer__wordmark {
   font-family: var(--font-display);

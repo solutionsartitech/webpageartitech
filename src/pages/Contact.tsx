@@ -32,12 +32,18 @@ function validate(f: Fields): Errors {
   return errors;
 }
 
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT as
+  | string
+  | undefined;
+
 export default function Contact() {
   useDocumentTitle("Contact — ARTITECH Solutions");
 
   const [fields, setFields] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const update =
     (key: keyof Fields) =>
@@ -46,21 +52,51 @@ export default function Contact() {
       if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
     };
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
     const found = validate(fields);
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
-    // In a real app this would POST to an API; the design simply confirms.
-    setSent(true);
+    if (!FORMSPREE_ENDPOINT) {
+      setSubmitError(
+        "This form isn't connected to an email endpoint yet. Set VITE_FORMSPREE_ENDPOINT to enable sending.",
+      );
+      return;
+    }
+
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: fields.name,
+          company: fields.company,
+          email: fields.email,
+          phone: fields.phone,
+          message: fields.message,
+          _replyto: fields.email,
+        }),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setSent(true);
+    } catch {
+      setSubmitError(
+        "Something went wrong sending your message. Please email us directly at solutions.artitech@gmail.com.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const reset = () => {
     setFields(EMPTY);
     setErrors({});
     setSent(false);
+    setSubmitError("");
   };
 
   return (
@@ -86,11 +122,11 @@ export default function Contact() {
         <div className="contact-info">
           <div className="contact-info__block">
             <div className="contact-info__label">EMAIL</div>
-            <div className="contact-info__value">hello@artitechsolutions.com</div>
+            <div className="contact-info__value">solutions.artitech@gmail.com</div>
           </div>
           <div className="contact-info__block">
             <div className="contact-info__label">PHONE</div>
-            <div className="contact-info__value">+1 (555) 012-3456</div>
+            <div className="contact-info__value">+639 9739 73887</div>
           </div>
           <div className="contact-info__block">
             <div className="contact-info__label">HOURS</div>
@@ -168,8 +204,11 @@ export default function Contact() {
                   <span className="field__error">{errors.message}</span>
                 )}
               </div>
-              <button type="submit" className="btn btn--block">
-                TALK TO AN EXPERT →
+              {submitError && (
+                <span className="field__error">{submitError}</span>
+              )}
+              <button type="submit" className="btn btn--block" disabled={submitting}>
+                {submitting ? "SENDING…" : "TALK TO AN EXPERT →"}
               </button>
             </form>
           )}
