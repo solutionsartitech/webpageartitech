@@ -18,8 +18,8 @@ const mvp = [
 ];
 
 const stats = [
-  { num: "120+", label: "PROJECTS DELIVERED" },
-  { num: "10 YRS", label: "IN BUSINESS" },
+  { num: "2+", label: "PROJECTS DELIVERED" },
+  { num: "1 YRS", label: "IN BUSINESS" },
   { num: "98%", label: "CLIENT RETENTION" },
   { num: "24/7", label: "SUPPORT COVERAGE" },
 ];
