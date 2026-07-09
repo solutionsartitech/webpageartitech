@@ -36,12 +36,30 @@ const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT as
   | string
   | undefined;
 
+const COMPANY_EMAIL = "solutions.artitech@gmail.com";
+
+function mailtoUrl(f: Fields): string {
+  const subject = `New inquiry from ${f.name}${f.company ? ` (${f.company})` : ""}`;
+  const body = [
+    `Name: ${f.name}`,
+    f.company && `Company: ${f.company}`,
+    `Email: ${f.email}`,
+    f.phone && `Phone: ${f.phone}`,
+    "",
+    f.message,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  return `mailto:${COMPANY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
 export default function Contact() {
   useDocumentTitle("Contact — ARTITECH Solutions");
 
   const [fields, setFields] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const [sentViaMailto, setSentViaMailto] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -60,9 +78,9 @@ export default function Contact() {
       return;
     }
     if (!FORMSPREE_ENDPOINT) {
-      setSubmitError(
-        "This form isn't connected to an email endpoint yet. Set VITE_FORMSPREE_ENDPOINT to enable sending.",
-      );
+      window.location.href = mailtoUrl(fields);
+      setSentViaMailto(true);
+      setSent(true);
       return;
     }
 
@@ -92,10 +110,14 @@ export default function Contact() {
     }
   };
 
+  const isFilled =
+    fields.name.trim() && fields.email.trim() && fields.message.trim();
+
   const reset = () => {
     setFields(EMPTY);
     setErrors({});
     setSent(false);
+    setSentViaMailto(false);
     setSubmitError("");
   };
 
@@ -145,8 +167,9 @@ export default function Contact() {
               <div className="form-success__badge">✓</div>
               <h3 className="form-success__title">Thank you.</h3>
               <p className="form-success__text">
-                We've received your request and will be in touch within one
-                business day.
+                {sentViaMailto
+                  ? `Your email app should have opened with your message ready — hit send there to reach us at ${COMPANY_EMAIL}.`
+                  : "We've received your request and will be in touch within one business day."}
               </p>
               <button type="button" className="btn--reset" onClick={reset}>
                 SEND ANOTHER MESSAGE
@@ -208,7 +231,7 @@ export default function Contact() {
                 <span className="field__error">{submitError}</span>
               )}
               <button type="submit" className="btn btn--block" disabled={submitting}>
-                {submitting ? "SENDING…" : "TALK TO AN EXPERT →"}
+                {submitting ? "SENDING…" : isFilled ? "SEND →" : "TALK TO AN EXPERT →"}
               </button>
             </form>
           )}
