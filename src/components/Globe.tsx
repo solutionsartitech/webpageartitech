@@ -80,10 +80,10 @@ export default function Globe({ speed = 5 }: { speed?: number }) {
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
-      const R = Math.min(w, h * 2) * 0.46;
+      const R = Math.min(w, h) * 0.44;
       const cx = w / 2;
-      const cy = R * 0.14 + h * 0.08 + R * 0.86; // globe center slightly below view
-      const tilt = -0.35;
+      const cy = h / 2;
+      const tilt = -0.3;
       const sinT = Math.sin(tilt);
       const cosT = Math.cos(tilt);
       const sinR = Math.sin(rot);
@@ -111,7 +111,19 @@ export default function Globe({ speed = 5 }: { speed?: number }) {
       };
 
       plot(ocean, "#C9C4B8", 1.6);
-      plot(land, "#0D2A52", 2.6);
+
+      ctx.shadowColor = "rgba(63, 224, 250, 0.85)";
+      ctx.shadowBlur = 4;
+      plot(land, "#1e9bd3", 2.8);
+      ctx.shadowBlur = 0;
+
+      // Glowing rim, like an energy field around the sphere's edge
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(63, 224, 250, 0.3)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
       raf = requestAnimationFrame(draw);
     };
 

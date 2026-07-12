@@ -11,6 +11,11 @@ export default function Nav() {
   return (
     <header className="nav">
       <div className="nav__inner">
+        <Link to="/" className="nav__brand">
+          <img src="/artitech-logo.png" alt="ARTITECH logo" className="nav__mark" />
+          <span className="nav__wordmark">RTITECH</span>
+        </Link>
+
         <nav className="nav__links">
           {links.map((l) => (
             <NavLink
@@ -25,17 +30,6 @@ export default function Nav() {
             </NavLink>
           ))}
         </nav>
-
-        <Link to="/" className="nav__brand">
-          <img src="/artitech-logo.png" alt="ARTITECH logo" className="nav__mark" />
-          <span className="nav__wordmark">RTITECH</span>
-        </Link>
-
-        <div className="nav__actions">
-          <Link to="/contact" className="btn btn--dark-sm">
-            TALK TO US
-          </Link>
-        </div>
       </div>
     </header>
   );
